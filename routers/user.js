@@ -135,6 +135,10 @@ router.post('/getuser', async(req, res) => {
         const email = req.body.localemail
         const json = req.body.localjson
 
+        if(!email && !json) {
+            throw new Error("Please Login")
+        }
+
         if(email && json) {
             const user = await User.findOne({email})
             const token = user.tokens.find((curtoken) => {
@@ -154,7 +158,7 @@ router.post('/getuser', async(req, res) => {
             throw new Error("You are not Logged")
         }
     } catch (error) {
-        res.send(error)
+        res.status(404).send(error)
     }
 })
 
